@@ -1,0 +1,10 @@
+﻿
+body {
+    color: silver;
+    background-color: #2D2D30;
+}
+
+.repo-states {
+    border-collapse: separate;
+    border-spacing: 0.5em;
+}

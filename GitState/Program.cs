@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.InteropServices;
 using Chromely.CefGlue;
@@ -13,6 +14,9 @@ namespace GitState
 {
     internal static class Program
     {
+        public static Settings Settings = new Settings();
+        public static List<RepositoryState> Repositories;
+
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
@@ -30,7 +34,7 @@ namespace GitState
             var provider = StonehengeResourceLoader
                 .CreateDefaultLoader(new VueResourceProvider());
             var host = new KestrelHost(provider, options);
-            if (!host.Start("localhost", 0))
+            if (!host.Start("localhost", 80))
             {
                 Console.WriteLine("Failed to start stonehenge server");
             }
@@ -48,7 +52,7 @@ namespace GitState
                 .WithHostTitle(options.Title)
                 .WithHostIconFile("stonehenge-chromely.ico")
                 .WithAppArgs(args)
-                .WithHostSize(100, 600)
+                .WithHostSize(200, 600)
                 .RegisterCustomerUrlScheme("http", "localhost")
                 .WithStartUrl(startUrl);
 

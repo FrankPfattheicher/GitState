@@ -1,15 +1,34 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>netcoreapp2.1</TargetFramework>
+        <OutputType>WinExe</OutputType>
+        <TargetPlatformIdentifier>win-x64;linux-x64</TargetPlatformIdentifier>
+        <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
+        <ApplicationIcon />
+        <StartupObject />
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="app\index.html" />
+      <None Remove="app\main.html" />
+      <None Remove="app\styles\GitState.css" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="app\index.html" />
+      <EmbeddedResource Include="app\main.html" />
+      <EmbeddedResource Include="app\styles\GitState.css" />
+    </ItemGroup>
 
     <ItemGroup>
       <PackageReference Include="Chromely.CefGlue.Gtk" Version="4.0.70" />
       <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70" />
       <PackageReference Include="Chromely.Core" Version="4.0.0" />
       <PackageReference Include="IctBaden.Stonehenge3" Version="3.3.9" />
+      <PackageReference Include="LibGit2Sharp" Version="0.26.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
+      <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
       <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
     </ItemGroup>
 

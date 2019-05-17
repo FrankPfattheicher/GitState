@@ -1,111 +1,13 @@
-<!--ViewModel:StartVm-->
-<!--Title:Info-->
-<div style="margin: 32px;">
+<!--Title:GitState-->
+<div>
 
-    <table>
-        <tr>
-            <td colspan="3">
-                <h1>Stonehenge Chromely Sample</h1>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Current&nbsp;time
+    <table class="repo-states">
+        <tr v-for="rs in RepoStates">
+            <td :style="{ background: rs.Color }" style="text-align: center; border-radius: 1em;">
+                &nbsp;{{rs.State}}&nbsp;
             </td>
             <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                {{TimeStamp}}
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td></td>
-        </tr>
-        <tr>
-            <td colspan="3">
-                <h4>Used Components</h4>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                .NET&nbsp;directory
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                {{RuntimeDirectory}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                self-hosted
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                {{IsSelfHosted}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                .net Core
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                {{IsNetCore}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                CLR
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                {{ClrVersion}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                This&nbsp;app
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                v{{DemoAppVersion}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Stonehenge&nbsp;3
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                v{{StonehengeVersion}}
-            </td>
-        </tr>
-        <tr>
-            <td>
-                Chromely
-            </td>
-            <td>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </td>
-            <td>
-                v{{ChromelyVersion}}
+                &nbsp;{{rs.Name}}
             </td>
         </tr>
     </table>
