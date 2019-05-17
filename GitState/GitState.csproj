@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Chromely.CefGlue.Gtk" Version="4.0.70" />
+      <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70" />
+      <PackageReference Include="Chromely.Core" Version="4.0.0" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.3.9" />
+      <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
+    </ItemGroup>
+
+</Project>
