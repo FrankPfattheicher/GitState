@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -44,7 +45,7 @@ namespace GitState
 
         public static int UpdateRepoStates(IEnumerable<RepoState> repos, CancellationToken cancel)
         {
-            var updateTasks = repos.Select(r => Task.Run(r.UpdateState, cancel)).ToArray();
+            var updateTasks = repos.Select(r => Task.Run<int>((Func<int>) r.UpdateState, cancel)).ToArray();
             // ReSharper disable once CoVariantArrayConversion
             Task.WaitAll(updateTasks);
             return updateTasks.Sum(t => t.Result);
