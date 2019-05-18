@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace GitState
 {
-    class Settings
+    internal class Settings
     {
+        public int UpdateIntervalSec { get; set; } = 5 * 60;
+        public int FontSize { get; set; } = 11;
         public List<string> RepositoryFolders { get; set; } = new List<string> { @"C:\ICT Baden" };
     }
 }

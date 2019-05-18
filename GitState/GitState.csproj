@@ -21,6 +21,12 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Include="GitState.ico">
+            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <PackageReference Include="Chromely.CefGlue.Gtk" Version="4.0.70" />
       <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70" />
       <PackageReference Include="Chromely.Core" Version="4.0.0" />

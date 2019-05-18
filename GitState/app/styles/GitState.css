@@ -1,10 +1,24 @@
 ﻿
 body {
-    color: silver;
+    color: gray;
     background-color: #2D2D30;
+    font-weight: bold;
 }
 
 .repo-states {
-    border-collapse: separate;
-    border-spacing: 0.5em;
+    list-style-type: none;
+    padding-left: 0;
+    cursor: default;
 }
+
+.repo-entry {
+    border: solid 1px transparent; 
+    border-collapse: separate;
+    cursor: pointer;
+    width: 200%;
+}
+
+.selected {
+    border: solid 1px silver;
+}
+

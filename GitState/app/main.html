@@ -1,15 +1,20 @@
 <!--Title:GitState-->
 <div>
 
-    <table class="repo-states">
-        <tr v-for="rs in RepoStates">
-            <td :style="{ background: rs.Color }" style="text-align: center; border-radius: 1em;">
-                &nbsp;{{rs.State}}&nbsp;
-            </td>
-            <td>
-                &nbsp;{{rs.Name}}
-            </td>
-        </tr>
-    </table>
+    <ul class="repo-states" :style="{ fontSize: FontSize + 'px' }" >
+        <li v-for="rs in Repos">
+            <table class="repo-entry"  :title="rs.ShortText" v-bind:class="{ selected: rs.Selected }" >
+                <tr v-on:click="SelectRepo(rs.Name)">
+                    <td :style="{ color: rs.StateText, background: rs.Color }" style="text-align: center; border-radius: 1em; width: 2em;">
+                        {{rs.State}}
+                    </td>
+                    <td>
+                        <span :style="{ color: rs.Color }" >&nbsp;{{rs.Name}}</span>
+                        <span>&nbsp;-&nbsp;{{rs.Branch}}</span>
+                    </td>
+                </tr>
+            </table>
+        </li>
+    </ul>
 
 </div>

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Runtime.InteropServices;
 using Chromely.CefGlue;
 using Chromely.Core;
 using Chromely.Core.Host;
@@ -14,8 +13,8 @@ namespace GitState
 {
     internal static class Program
     {
-        public static Settings Settings = new Settings();
-        public static List<RepositoryState> Repositories;
+        public static readonly Settings Settings = new Settings();
+        public static List<RepoState> Repositories;
 
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
@@ -50,9 +49,9 @@ namespace GitState
                 // ReSharper disable once RedundantArgumentDefaultValue
                 .WithHostMode(WindowState.Normal, true)
                 .WithHostTitle(options.Title)
-                .WithHostIconFile("stonehenge-chromely.ico")
+                .WithHostIconFile("GitState.ico")
                 .WithAppArgs(args)
-                .WithHostSize(200, 600)
+                .WithHostSize(250, 800)
                 .RegisterCustomerUrlScheme("http", "localhost")
                 .WithStartUrl(startUrl);
 
