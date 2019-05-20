@@ -4,6 +4,8 @@ using IctBaden.Stonehenge3.ViewModel;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
+
 // ReSharper disable UnusedMember.Global
 
 namespace GitState.ViewModels
@@ -20,8 +22,8 @@ namespace GitState.ViewModels
         public int FontSize => Program.Settings.FontSize;
 
         private readonly Timer _updater;
-        private bool _initialUpdate = true;
-        private bool _updating;
+        private int _updating;
+        private Task[] _updateTasks;
         private readonly CancellationTokenSource _cancelUpdates;
         
         public MainVm(AppSession session) : base(session)
@@ -43,16 +45,19 @@ namespace GitState.ViewModels
         
         private void Update(object state)
         {
-            if (_updating) return;
-            _updating = true;
-
-            if (Updater.UpdateRepoStates(Program.Repositories, _cancelUpdates.Token) > 0 || _initialUpdate)
-            {
-                _initialUpdate = false;
-                NotifyPropertyChanged(nameof(Repos));                
-            }
+            if (_updating > 0) return;
             
-            _updating = false;
+            _updating = Program.Repositories.Count();
+
+            void Update(RepoState r)
+            {
+                r.UpdateState();
+                NotifyPropertyChanged(nameof(Repos));
+                _updating--;
+            }
+            _updateTasks = Program.Repositories
+                .Select(r => Task.Run(() => Update(r), _cancelUpdates.Token))
+                .ToArray();
         }
 
         [ActionMethod]

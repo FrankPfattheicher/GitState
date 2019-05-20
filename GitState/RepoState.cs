@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using LibGit2Sharp;
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
 
 // ReSharper disable UnusedMember.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -30,7 +32,17 @@ namespace GitState
 
         public int UpdateState()
         {
-            var status = _repo.RetrieveStatus(new StatusOptions());
+            RepositoryStatus status;
+            try
+            {
+                status = _repo.RetrieveStatus(new StatusOptions());
+            }
+            catch (Exception ex)
+            {
+                LongText = ex.Message;
+                IsFailed = true;
+                return 1;
+            }
 
             var changes = (_status == null)
                 ? 0
@@ -59,10 +71,15 @@ namespace GitState
             AheadBy = tracking.AheadBy ?? 0;
             BehindBy = tracking.BehindBy ?? 0;
 
+            LongText =
+            ShortText =
+                $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
+            
             return changes;
         }
 
         public bool IsUnknown => _status == null;
+        public bool IsFailed { get; private set; }
 
         public bool IsClean =>
             AddedCount +
@@ -83,7 +100,7 @@ namespace GitState
         public int MissingCount { get; private set; }
         public int IgnoredCount { get; private set; }
 
-        public string ShortText =>
-            $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
+        public string ShortText { get; private set; }
+        public string LongText { get; private set; }
     }
 }

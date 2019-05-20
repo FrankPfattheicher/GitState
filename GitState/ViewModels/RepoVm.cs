@@ -1,5 +1,10 @@
 ﻿using System.Diagnostics;
+
 // ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable UnusedAutoPropertyAccessor.Local
+// ReSharper disable UnusedAutoPropertyAccessor.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Local
+// ReSharper disable UnusedMember.Global
 
 namespace GitState.ViewModels
 {
@@ -8,57 +13,86 @@ namespace GitState.ViewModels
     {
         private readonly RepoState _repoState;
 
+        public bool Selected => _repoState.Selected;
+        public string Name => _repoState.Name;
+        public string Branch => _repoState.Branch;
+
+        public string StateText { get; private set; }
+        public string TextColor { get; private set; }
+        public string StateColor { get; private set; }
+        public string ShortDescription { get; private set; }
+
         public RepoVm(RepoState repoState)
         {
             _repoState = repoState;
-        }
+            ShortDescription = _repoState.IsUnknown ? "<unknown>" : _repoState.ShortText;
 
-        public bool Selected => _repoState.Selected;
-        public string Name => _repoState.Name;
-        public string Branch => _repoState.Branch;        
-
-        public string State
-        {
-            get
+            if (_repoState.IsUnknown)
             {
-                if (_repoState.IsUnknown) return "?";
-
-                if (_repoState.UntrackedCount > 0) return "!";
-
-                if (_repoState.BehindBy > 0) return _repoState.BehindBy.ToString();
-
-                return _repoState.ModifiedCount == 0
-                    ? "✓"
-                    : _repoState.ModifiedCount.ToString();
+                StateText = "?";
+                StateColor = "gray";
+                TextColor = "white";
+                return;
             }
-        }
-        public string StateText =>
-            Color == "orange" || Color == "yellow" || Color == "deepskyblue"
-                ? "black" 
-                : "white";
 
-        public string Color
-        {
-            get
+            if (_repoState.IsFailed)
             {
-                if (_repoState.IsUnknown) return "gray";
-                if (_repoState.IsClean)
-                {
-                    if(_repoState.AheadBy > 0) return "deepskyblue";
-                    if(_repoState.BehindBy > 0) return "yellow";
-                    return "green";
-                }
-                if (_repoState.AddedCount > 0) return "deepskyblue";
-                if (_repoState.ModifiedCount > 0)
-                {
-                    if(_repoState.BehindBy > 0) return "orange";
-                    return "tomato";
-                }
-                if (_repoState.UntrackedCount > 0) return "darkmagenta";
-                return "green";
+                StateText = "?";
+                StateColor = "black";
+                TextColor = "gray";
+                return;
             }
-        }
 
-        public string ShortText => _repoState.IsUnknown ? "<unknown>" : _repoState.ShortText;
+            // What could be happened ?
+            if (_repoState.IsClean)
+            {
+                if (_repoState.AheadBy > 0)
+                {
+                    StateText = $"+{_repoState.AheadBy.ToString()}";
+                    StateColor = "blue";
+                    TextColor = "white";
+                    return;
+                }
+
+                if (_repoState.BehindBy > 0)
+                {
+                    StateText = $"-{_repoState.BehindBy.ToString()}";
+                    StateColor = "yellow";
+                    TextColor = "black";
+                    return;
+                }
+            }
+
+            var uncommitted = _repoState.UntrackedCount + _repoState.ModifiedCount;
+            if (uncommitted > 0)
+            {
+                if (_repoState.BehindBy > 0)
+                {
+                    // During you work - thi is NOT fine   
+                    StateText = "X";
+                    StateColor = "red";
+                    TextColor = "yellow";
+                    return;
+                }
+
+                StateText = $"~{uncommitted.ToString()}";
+                StateColor = "orange";
+                TextColor = "white";
+                return;
+            }
+
+            if (_repoState.UntrackedCount > 0)
+            {
+                StateText = $"~{_repoState.UntrackedCount.ToString()}";
+                StateColor = "magenta";
+                TextColor = "white";
+                return;
+            }
+
+            // everything fine
+            StateText = "✓";
+            StateColor = "green";
+            TextColor = "white";
+        }
     }
 }
