@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using LibGit2Sharp;
 
@@ -19,6 +20,12 @@ namespace GitState
             
             foreach (var baseFolder in baseFolders)
             {
+                if (!Directory.Exists(baseFolder))
+                {
+                    Trace.TraceWarning("Repository base folder does not exist: " + baseFolder);
+                    continue;
+                }
+                
                 foreach (var directory in Directory.EnumerateDirectories(baseFolder))
                 {
                     try

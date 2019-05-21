@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using Chromely.CefGlue;
 using Chromely.Core;
 using Chromely.Core.Host;
+using IctBaden.Framework.IniFile;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
 using IctBaden.Stonehenge3.Resources;
@@ -19,9 +22,18 @@ namespace GitState
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
         {
+            Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
+            
             var path = AppDomain.CurrentDomain.BaseDirectory;
             Directory.SetCurrentDirectory(path);
 
+            var settingsFile = new Profile(Profile.LocalToExeFileName);
+            //ProfileClassLoader.LoadClass(Settings, settingsFile);
+            var section = settingsFile["Settings"];
+            Settings.UpdateIntervalSec = section.Get("UpdateIntervalSec", 5 * 60);
+            Settings.FontSize = section.Get("FontSize", 11);
+            Settings.RepositoryFolders = section.Get<string>("RepositoryFolders", "").Split(';').ToList();
+            
             // Starting stonehenge backend
             var options = new StonehengeHostOptions
             {
@@ -33,7 +45,7 @@ namespace GitState
             var provider = StonehengeResourceLoader
                 .CreateDefaultLoader(new VueResourceProvider());
             var host = new KestrelHost(provider, options);
-            if (!host.Start("localhost", 0))
+            if (!host.Start("localhost", 8880))
             {
                 Console.WriteLine("Failed to start stonehenge server");
             }

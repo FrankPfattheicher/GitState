@@ -1,6 +1,9 @@
 <!--Title:GitState-->
 <div>
 
+    <p>
+        <span v-html="StateText"></span>
+    </p>
     <ul class="repo-states" :style="{ fontSize: FontSize + 'px' }" >
         <li v-for="rs in Repos">
             <table class="repo-entry"  :title="rs.ShortDescription" v-bind:class="{ selected: rs.Selected }" >

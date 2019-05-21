@@ -69,8 +69,8 @@ namespace GitState.ViewModels
                 if (_repoState.BehindBy > 0)
                 {
                     // During you work - thi is NOT fine   
-                    StateText = "X";
-                    StateColor = "red";
+                    StateText = "❌";
+                    StateColor = "tomato";
                     TextColor = "yellow";
                     return;
                 }
