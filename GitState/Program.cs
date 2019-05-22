@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using Chromely.CefGlue;
 using Chromely.Core;
 using Chromely.Core.Host;
@@ -29,7 +28,6 @@ namespace GitState
 
             var settingsFile = new Profile(Profile.LocalToExeFileName);
             new ProfileClassLoader().LoadClass(Settings, settingsFile);
-            var section = settingsFile["Settings"];
             
             // Starting stonehenge backend
             var options = new StonehengeHostOptions

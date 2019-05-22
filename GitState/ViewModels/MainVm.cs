@@ -8,6 +8,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using IctBaden.Framework.IniFile;
+// ReSharper disable MemberCanBePrivate.Global
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 
@@ -36,7 +37,7 @@ namespace GitState.ViewModels
 
         public MainVm(AppSession session) : base(session)
         {
-            Trace.TraceInformation("new MainVm()");
+            Trace.TraceInformation($"new MainVm({session.Id})");
             StateMessage = "loading...";
             _cancelUpdates = new CancellationTokenSource();
             _updater = new Timer(Update, this, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(60));
@@ -44,7 +45,7 @@ namespace GitState.ViewModels
 
         public void Dispose()
         {
-            Trace.TraceInformation("delete MainVm()");
+            Trace.TraceInformation($"delete MainVm({Session.Id})");
             _cancelUpdates?.Cancel();
             _updater?.Dispose();
             _updater = null;
@@ -56,11 +57,13 @@ namespace GitState.ViewModels
             
             if (Program.Repositories == null)
             {
+                NotifyPropertyChanged(nameof(FontSize));
                 Trace.TraceInformation("Collect repositories...");
                 Program.Repositories = Updater.GetRepositories(Program.Settings.RepositoryFolders);
             }
 
-            Trace.TraceInformation("Start state updates..");
+            Trace.TraceInformation($"Start state updates {Session.Id}..");
+            var updates = 0;
             // State message
             StateMessage = "";
             if (Program.Repositories.Count == 0)
@@ -91,6 +94,7 @@ namespace GitState.ViewModels
                 NotifyPropertyChanged(nameof(Repos));
                 r.UpdateState();
                 NotifyPropertyChanged(nameof(Repos));
+                updates++;
             }
             
             _updateTasks = Program.Repositories
@@ -98,6 +102,7 @@ namespace GitState.ViewModels
                 .ToArray();
 
             Task.WaitAll(_updateTasks);
+            Trace.TraceInformation($"{updates} states updated.");
         }
 
         [ActionMethod]

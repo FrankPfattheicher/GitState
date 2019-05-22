@@ -15,7 +15,7 @@ body {
     border: solid 1px transparent; 
     border-collapse: separate;
     cursor: pointer;
-    width: 200%;
+    width: 100%;
 }
 
 .selected {

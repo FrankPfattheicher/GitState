@@ -6,6 +6,13 @@
         <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
         <ApplicationIcon />
         <StartupObject />
+        <Title>GIT - State</Title>
+        <Authors>Frank Pfattheicher</Authors>
+        <Description>A active state display for GIT repositories</Description>
+        <Copyright>(C) 2019 ICT Baden GmbH</Copyright>
+        <PackageProjectUrl>https://github.com/FrankPfattheicher/GitState</PackageProjectUrl>
+        <PackageLicenseUrl>https://github.com/FrankPfattheicher/GitState/blob/master/LICENSE</PackageLicenseUrl>
+        <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
     </PropertyGroup>
 
     <ItemGroup>
@@ -31,7 +38,7 @@
       <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70" />
       <PackageReference Include="Chromely.Core" Version="4.0.0" />
       <PackageReference Include="IctBaden.Framework" Version="1.0.1" />
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.3.11" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.3.12" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.0" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />

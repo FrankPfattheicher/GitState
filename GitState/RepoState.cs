@@ -35,6 +35,7 @@ namespace GitState
 
         private static int GetChanges(IEnumerable<object> a, IEnumerable<object> b) => a.Count() != b.Count() ? 1 : 0;
 
+        // ReSharper disable once UnusedMethodReturnValue.Global
         public int UpdateState()
         {
             if (IsUpdating) return 0;
