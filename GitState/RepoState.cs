@@ -19,6 +19,10 @@ namespace GitState
         public string Path => _repo.Info.WorkingDirectory;
         public string Branch => _repo.Head.FriendlyName;
 
+        public bool IsUpdating { get; private set; }
+        public DateTime LastUpdate { get; private set; }
+        
+        
         private readonly Repository _repo;
         private RepositoryStatus _status;
 
@@ -26,16 +30,30 @@ namespace GitState
         {
             _repo = repo;
             Name = name;
+            LastUpdate = DateTime.Now - TimeSpan.FromDays(1);
         }
 
         private static int GetChanges(IEnumerable<object> a, IEnumerable<object> b) => a.Count() != b.Count() ? 1 : 0;
 
         public int UpdateState()
         {
+            if (IsUpdating) return 0;
+            
+            IsUpdating = true;
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+
             RepositoryStatus status;
             try
             {
-                status = _repo.RetrieveStatus(new StatusOptions());
+                var options = new StatusOptions
+                {
+                    DetectRenamesInIndex = false,
+                    IncludeIgnored = false,
+                    IncludeUntracked = false,
+                    RecurseUntrackedDirs = false
+                };
+                status = _repo.RetrieveStatus(options);
             }
             catch (Exception ex)
             {
@@ -74,7 +92,13 @@ namespace GitState
             LongText =
             ShortText =
                 $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
+
+            stopwatch.Stop();
+            Trace.TraceInformation($"Repo {Name} updated in {stopwatch.ElapsedMilliseconds / 1000.0}sec");
             
+            LastUpdate = DateTime.Now;
+            IsUpdating = false;
+
             return changes;
         }
 

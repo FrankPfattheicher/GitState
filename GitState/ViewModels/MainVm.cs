@@ -2,6 +2,7 @@ using System;
 using IctBaden.Stonehenge3.Core;
 using IctBaden.Stonehenge3.ViewModel;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -25,65 +26,78 @@ namespace GitState.ViewModels
 
         public int FontSize => Program.Settings.FontSize;
 
-        public string StateText { get; set; }
+        public string StateMessage { get; private set; }
+        [DependsOn(nameof(StateMessage))]
+        public bool HasStateMessage => !string.IsNullOrEmpty(StateMessage);
 
-        private readonly Timer _updater;
-        private int _updating;
+        private Timer _updater;
         private Task[] _updateTasks;
         private readonly CancellationTokenSource _cancelUpdates;
 
         public MainVm(AppSession session) : base(session)
         {
+            Trace.TraceInformation("new MainVm()");
+            StateMessage = "loading...";
             _cancelUpdates = new CancellationTokenSource();
-            _updater = new Timer(Update, this, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
+            _updater = new Timer(Update, this, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(60));
         }
 
         public void Dispose()
         {
+            Trace.TraceInformation("delete MainVm()");
             _cancelUpdates?.Cancel();
             _updater?.Dispose();
+            _updater = null;
         }
         
         private void Update(object state)
         {
+            if (_updater == null) return;
+            
             if (Program.Repositories == null)
             {
+                Trace.TraceInformation("Collect repositories...");
                 Program.Repositories = Updater.GetRepositories(Program.Settings.RepositoryFolders);
             }
 
-            if (_updating > 0) return;
-            
-            _updating = Program.Repositories.Count();
-
-            void Update(RepoState r)
-            {
-                r.UpdateState();
-                NotifyPropertyChanged(nameof(Repos));
-                _updating--;
-            }
-            _updateTasks = Program.Repositories
-                .Select(r => Task.Run(() => Update(r), _cancelUpdates.Token))
-                .ToArray();
-
+            Trace.TraceInformation("Start state updates..");
+            // State message
+            StateMessage = "";
             if (Program.Repositories.Count == 0)
             {
                 if (!File.Exists(Profile.LocalToExeFileName))
                 {
-                    StateText = "No configuration file found<br/>"
+                    StateMessage = "No configuration file found<br/>"
                                 + Profile.LocalToExeFileName;
                 }
                 else if (Program.Settings.RepositoryFolders.Count == 0)
                 {
-                    StateText = "No repository folders specified in<br/>"
+                    StateMessage = "No repository folders specified in<br/>"
                                 + Profile.LocalToExeFileName;
                 }
                 else
                 {
-                    StateText = "No repositories found in <br/>"
+                    StateMessage = "No repositories found in <br/>"
                                 + string.Join("<br/>", Program.Settings.RepositoryFolders);
                 }
             }
-            NotifyPropertyChanged(nameof(StateText));
+            NotifyPropertyChanged(nameof(StateMessage));
+            
+            void Update(RepoState r)
+            {
+                if (r.IsUpdating) return; 
+                if ((DateTime.Now - r.LastUpdate).TotalSeconds <= Program.Settings.UpdateIntervalSec) return;
+                
+                NotifyPropertyChanged(nameof(Repos));
+                r.UpdateState();
+                NotifyPropertyChanged(nameof(Repos));
+            }
+            
+            _updateTasks = Program.Repositories
+                .Select(r => Task.Run(() => Update(r), _cancelUpdates.Token))
+                .ToArray();
+
+            Task.WaitAll(_updateTasks);
         }
 
         [ActionMethod]

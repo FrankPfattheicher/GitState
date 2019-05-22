@@ -1,8 +1,7 @@
 <!--Title:GitState-->
 <div>
-
-    <p>
-        <span v-html="StateText"></span>
+    <p v-if="HasStateMessage">
+        <span v-html="StateMessage"></span>
     </p>
     <ul class="repo-states" :style="{ fontSize: FontSize + 'px' }" >
         <li v-for="rs in Repos">
@@ -13,7 +12,9 @@
                     </td>
                     <td>
                         <span :style="{ color: rs.StateColor }" >&nbsp;{{rs.Name}}</span>
-                        <span>&nbsp;-&nbsp;{{rs.Branch}}</span>
+                        <span v-if="rs.IsUpdating">&nbsp;~&nbsp;</span>
+                        <span v-else>&nbsp;-&nbsp;</span>
+                        <span>{{rs.Branch}}</span>
                     </td>
                 </tr>
             </table>

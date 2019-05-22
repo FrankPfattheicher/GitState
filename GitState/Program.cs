@@ -28,11 +28,8 @@ namespace GitState
             Directory.SetCurrentDirectory(path);
 
             var settingsFile = new Profile(Profile.LocalToExeFileName);
-            //ProfileClassLoader.LoadClass(Settings, settingsFile);
+            new ProfileClassLoader().LoadClass(Settings, settingsFile);
             var section = settingsFile["Settings"];
-            Settings.UpdateIntervalSec = section.Get("UpdateIntervalSec", 5 * 60);
-            Settings.FontSize = section.Get("FontSize", 11);
-            Settings.RepositoryFolders = section.Get<string>("RepositoryFolders", "").Split(';').ToList();
             
             // Starting stonehenge backend
             var options = new StonehengeHostOptions

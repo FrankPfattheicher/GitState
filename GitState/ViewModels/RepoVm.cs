@@ -17,6 +17,8 @@ namespace GitState.ViewModels
         public string Name => _repoState.Name;
         public string Branch => _repoState.Branch;
 
+        public bool IsUpdating => _repoState.IsUpdating;
+        
         public string StateText { get; private set; }
         public string TextColor { get; private set; }
         public string StateColor { get; private set; }
