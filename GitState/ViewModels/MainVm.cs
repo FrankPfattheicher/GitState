@@ -25,6 +25,7 @@ namespace GitState.ViewModels
             .ToList();
 
 
+        // ReSharper disable once MemberCanBeMadeStatic.Global
         public int FontSize => Program.Settings.FontSize;
 
         public string StateMessage { get; private set; }

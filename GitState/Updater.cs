@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using LibGit2Sharp;
 
 namespace GitState
@@ -11,7 +12,7 @@ namespace GitState
         public static List<RepoState> GetRepositories(IEnumerable<string> baseFolders)
         {
             var repoStates = GetRepoStates(baseFolders);
-            return repoStates;
+            return repoStates.OrderBy(r => r.Name).ToList();
         }
 
         private static List<RepoState> GetRepoStates(IEnumerable<string> baseFolders)

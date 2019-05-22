@@ -49,9 +49,9 @@ namespace GitState
             {
                 var options = new StatusOptions
                 {
-                    DetectRenamesInIndex = false,
+                    DetectRenamesInIndex = true,
                     IncludeIgnored = false,
-                    IncludeUntracked = false,
+                    IncludeUntracked = true,
                     RecurseUntrackedDirs = false
                 };
                 status = _repo.RetrieveStatus(options);
