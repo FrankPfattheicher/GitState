@@ -65,8 +65,7 @@ namespace GitState.ViewModels
                 }
             }
 
-            var uncommitted = _repoState.UntrackedCount + _repoState.ModifiedCount;
-            if (uncommitted > 0)
+            if (_repoState.ModifiedCount > 0)
             {
                 if (_repoState.BehindBy > 0)
                 {
@@ -77,7 +76,7 @@ namespace GitState.ViewModels
                     return;
                 }
 
-                StateText = $"~{uncommitted.ToString()}";
+                StateText = $"~{_repoState.ModifiedCount.ToString()}";
                 StateColor = "orange";
                 TextColor = "white";
                 return;
@@ -85,15 +84,15 @@ namespace GitState.ViewModels
 
             if (_repoState.UntrackedCount > 0)
             {
-                StateText = $"~{_repoState.UntrackedCount.ToString()}";
-                StateColor = "magenta";
+                StateText = $"+{_repoState.UntrackedCount.ToString()}";
+                StateColor = "slateblue";
                 TextColor = "white";
                 return;
             }
 
             // everything fine
             StateText = "✓";
-            StateColor = "green";
+            StateColor = "darkolivegreen";
             TextColor = "white";
         }
     }

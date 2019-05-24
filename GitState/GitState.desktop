@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=GitState
+GenericName=GitState
+Exec=/home/frank/GitState/GitState
+Icon=/home/frank/GitState/GitState64x64.png
+Terminal=false
+Type=Application
