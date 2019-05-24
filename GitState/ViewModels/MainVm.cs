@@ -20,7 +20,7 @@ namespace GitState.ViewModels
     {
         // ReSharper disable once MemberCanBeMadeStatic.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<RepoVm> Repos => Program.Repositories
+        public List<RepoVm> Repos => Program.Repositories?
             .Select(r => new RepoVm(r))
             .ToList();
 
