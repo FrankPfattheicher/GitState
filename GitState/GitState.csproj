@@ -13,6 +13,8 @@
         <PackageProjectUrl>https://github.com/FrankPfattheicher/GitState</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/FrankPfattheicher/GitState/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
+        <Version>1.0.1</Version>
+        <Company>ICT Baden GmbH</Company>
     </PropertyGroup>
 
     <ItemGroup>

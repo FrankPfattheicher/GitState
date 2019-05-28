@@ -18,7 +18,8 @@ namespace GitState.ViewModels
         public string Branch => _repoState.Branch;
 
         public bool IsUpdating => _repoState.IsUpdating;
-        
+        public bool IsFailed => _repoState.IsFailed;
+
         public string StateText { get; private set; }
         public string TextColor { get; private set; }
         public string StateColor { get; private set; }
@@ -29,11 +30,12 @@ namespace GitState.ViewModels
             _repoState = repoState;
             ShortDescription = _repoState.IsUnknown ? "<unknown>" : _repoState.ShortText;
 
-            if (_repoState.IsUnknown)
+            if (_repoState.IsSecurityFailure)
             {
-                StateText = "?";
-                StateColor = "gray";
-                TextColor = "white";
+                StateText = "⛒";
+                StateColor = "darkslategrey";
+                TextColor = "yellow";
+                ShortDescription = _repoState.LongText;
                 return;
             }
 
@@ -42,6 +44,15 @@ namespace GitState.ViewModels
                 StateText = "?";
                 StateColor = "black";
                 TextColor = "gray";
+                ShortDescription = _repoState.LongText;
+                return;
+            }
+
+            if (_repoState.IsUnknown)
+            {
+                StateText = "?";
+                StateColor = "gray";
+                TextColor = "white";
                 return;
             }
 

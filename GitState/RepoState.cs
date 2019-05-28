@@ -21,8 +21,33 @@ namespace GitState
 
         public bool IsUpdating { get; private set; }
         public DateTime LastUpdate { get; private set; }
-        
-        
+
+        public bool IsUnknown => _status == null;
+        public bool IsFailed { get; private set; }
+        public bool IsSecurityFailure { get; private set; }
+
+        public bool IsClean =>
+            AddedCount +
+            StagedCount +
+            RemovedCount +
+            UntrackedCount +
+            ModifiedCount +
+            MissingCount == 0;
+
+        public int AheadBy { get; private set; }
+        public int BehindBy { get; private set; }
+
+        public int AddedCount { get; private set; }
+        public int StagedCount { get; private set; }
+        public int RemovedCount { get; private set; }
+        public int UntrackedCount { get; private set; }
+        public int ModifiedCount { get; private set; }
+        public int MissingCount { get; private set; }
+        public int IgnoredCount { get; private set; }
+
+        public string ShortText { get; private set; }
+        public string LongText { get; private set; }
+
         private readonly Repository _repo;
         private RepositoryStatus _status;
 
@@ -44,22 +69,25 @@ namespace GitState
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
+            var context = "";
             RepositoryStatus status;
             try
             {
-                var options = new StatusOptions
-                {
-                    DetectRenamesInIndex = true,
-                    IncludeIgnored = false,
-                    IncludeUntracked = true,
-                    RecurseUntrackedDirs = false
-                };
-                status = _repo.RetrieveStatus(options);
+                context = "Fetch";
+                var remote = _repo.Network.Remotes["origin"];
+                var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification).ToList();
+                Commands.Fetch(_repo, remote.Name, refSpecs, null, null);
+
+                context = "RetrieveStatus";
+                status = _repo.RetrieveStatus();
             }
             catch (Exception ex)
             {
-                LongText = ex.Message;
+                LongText = context + ": " + ex.Message;
                 IsFailed = true;
+                IsSecurityFailure = ex.Message.Contains("401");
+                LastUpdate = DateTime.Now;
+                IsUpdating = false;
                 return 1;
             }
 
@@ -90,6 +118,9 @@ namespace GitState
             AheadBy = tracking.AheadBy ?? 0;
             BehindBy = tracking.BehindBy ?? 0;
 
+            IsFailed = false;
+            IsSecurityFailure = false;
+
             LongText =
             ShortText =
                 $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
@@ -103,29 +134,5 @@ namespace GitState
             return changes;
         }
 
-        public bool IsUnknown => _status == null;
-        public bool IsFailed { get; private set; }
-
-        public bool IsClean =>
-            AddedCount +
-            StagedCount +
-            RemovedCount +
-            UntrackedCount +
-            ModifiedCount +
-            MissingCount == 0;
-
-        public int AheadBy { get; private set; }
-        public int BehindBy { get; private set; }
-
-        public int AddedCount { get; private set; }
-        public int StagedCount { get; private set; }
-        public int RemovedCount { get; private set; }
-        public int UntrackedCount { get; private set; }
-        public int ModifiedCount { get; private set; }
-        public int MissingCount { get; private set; }
-        public int IgnoredCount { get; private set; }
-
-        public string ShortText { get; private set; }
-        public string LongText { get; private set; }
     }
 }
