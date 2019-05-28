@@ -56,7 +56,7 @@ namespace GitState
                 // ReSharper disable once RedundantArgumentDefaultValue
                 .WithHostMode(WindowState.Normal, true)
                 .WithHostTitle(options.Title)
-                .WithHostIconFile("GitState.ico")
+                .WithHostIconFile("GitState64x64.png")
                 .WithAppArgs(args)
                 .WithHostSize(250, 800)
                 .RegisterCustomerUrlScheme("http", "localhost")
