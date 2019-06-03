@@ -73,10 +73,13 @@ namespace GitState
             RepositoryStatus status;
             try
             {
-                context = "Fetch";
-                var remote = _repo.Network.Remotes["origin"];
-                var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification).ToList();
-                Commands.Fetch(_repo, remote.Name, refSpecs, null, null);
+                if (!Program.Settings.UseLocalStateOnly)
+                {
+                    context = "Fetch";
+                    var remote = _repo.Network.Remotes["origin"];
+                    var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification).ToList();
+                    Commands.Fetch(_repo, remote.Name, refSpecs, null, null);
+                }
 
                 context = "RetrieveStatus";
                 status = _repo.RetrieveStatus();

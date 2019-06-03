@@ -37,7 +37,7 @@
         <Content Include="GitState.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <Content Include="GitState64x64.png">
+        <Content Include="GitState.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
     </ItemGroup>
