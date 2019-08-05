@@ -54,11 +54,12 @@ namespace GitState
                 .WithLoadingCefBinariesIfNotFound(true)
                 .WithSilentCefBinariesLoading(true)
                 // ReSharper disable once RedundantArgumentDefaultValue
-                .WithHostMode(WindowState.Normal, true)
+                .WithHostMode(WindowState.Normal)
+                .WithDefaultSubprocess()
                 .WithHostTitle(options.Title)
                 .WithHostIconFile("GitState.ico")
                 .WithAppArgs(args)
-                .WithHostSize(250, 800)
+                .WithHostBounds(250, 800)
                 .RegisterCustomerUrlScheme("http", "localhost")
                 .WithStartUrl(startUrl);
 

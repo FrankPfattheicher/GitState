@@ -3,7 +3,6 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetPlatformIdentifier>win-x64;linux-x64</TargetPlatformIdentifier>
-        <TargetFrameworks>net47;netcoreapp2.2</TargetFrameworks>
         <ApplicationIcon />
         <StartupObject />
         <Title>GIT - State</Title>
@@ -15,6 +14,8 @@
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
         <Version>1.0.1</Version>
         <Company>ICT Baden GmbH</Company>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
     </PropertyGroup>
 
     <ItemGroup>
@@ -43,11 +44,11 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Chromely.CefGlue.Gtk" Version="4.0.70" />
-      <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70" />
-      <PackageReference Include="Chromely.Core" Version="4.0.0" />
-      <PackageReference Include="IctBaden.Framework" Version="1.0.3" />
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.6.0" />
+      <PackageReference Include="Chromely.CefGlue.Gtk" Version="4.0.70.1" />
+      <PackageReference Include="Chromely.CefGlue.Winapi" Version="4.0.70.1" />
+      <PackageReference Include="Chromely.Core" Version="4.0.0.1" />
+      <PackageReference Include="IctBaden.Framework" Version="1.0.4" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.7.0" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.0" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.0" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
