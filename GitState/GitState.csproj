@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
         <TargetPlatformIdentifier>win-x64;linux-x64</TargetPlatformIdentifier>
-        <ApplicationIcon />
+        <ApplicationIcon>GitState.ico</ApplicationIcon>
         <StartupObject />
         <Title>GIT - State</Title>
         <Authors>Frank Pfattheicher</Authors>
@@ -16,6 +16,7 @@
         <Company>ICT Baden GmbH</Company>
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
+        <NoWin32Manifest>true</NoWin32Manifest>
     </PropertyGroup>
 
     <ItemGroup>
