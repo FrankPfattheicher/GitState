@@ -34,9 +34,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="GitState.cfg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
+        <Content Include="GitState.cfg" />
         <Content Include="GitState.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>

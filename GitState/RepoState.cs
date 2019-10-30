@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using LibGit2Sharp;
+using LibGit2Sharp.Handlers;
+
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global
 
@@ -78,7 +80,18 @@ namespace GitState
                     context = "Fetch";
                     var remote = _repo.Network.Remotes["origin"];
                     var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification).ToList();
-                    Commands.Fetch(_repo, remote.Name, refSpecs, null, null);
+                    var credentials = new UsernamePasswordCredentials
+                        {
+                            Username = Program.Settings.GitUserOrToken,
+                            Password = Program.Settings.GitPassword
+                        };
+                    Credentials CredentialsHandler(string _url, string _user, SupportedCredentialTypes _cred) => credentials;
+                    var options = new FetchOptions
+                    {
+                        CredentialsProvider = CredentialsHandler,
+                        TagFetchMode = TagFetchMode.All
+                    };
+                    Commands.Fetch(_repo, remote.Name, refSpecs, options, null);
                 }
 
                 context = "RetrieveStatus";
@@ -91,6 +104,7 @@ namespace GitState
                 IsSecurityFailure = ex.Message.Contains("401");
                 LastUpdate = DateTime.Now;
                 IsUpdating = false;
+                Trace.TraceError($"Repo {Name} FAILED TO UPDATE: {LongText}");
                 return 1;
             }
 
@@ -125,8 +139,7 @@ namespace GitState
             IsSecurityFailure = false;
 
             LongText =
-            ShortText =
-                $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
+            ShortText = $"+{AddedCount} ~{StagedCount} -{RemovedCount} | +{UntrackedCount} ~{ModifiedCount} -{MissingCount} | i{IgnoredCount}";
 
             stopwatch.Stop();
             Trace.TraceInformation($"Repo {Name} updated in {stopwatch.ElapsedMilliseconds / 1000.0}sec");
@@ -136,6 +149,6 @@ namespace GitState
 
             return changes;
         }
-
+        
     }
 }
