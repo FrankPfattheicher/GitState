@@ -14,9 +14,10 @@
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
         <Version>1.0.1</Version>
         <Company>ICT Baden GmbH</Company>
-        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <TargetFramework>netcoreapp3.0</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <NoWin32Manifest>true</NoWin32Manifest>
+        <LangVersion>8</LangVersion>
     </PropertyGroup>
 
     <ItemGroup>
