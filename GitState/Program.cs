@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using Chromely.CefGlue;
 using Chromely.Core;
-using Chromely.Core.Host;
 using IctBaden.Framework.IniFile;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
@@ -64,30 +62,15 @@ namespace GitState
             Console.WriteLine("Starting chromely frontend");
             var startUrl = host.BaseUrl;
 
-            var config = ChromelyConfiguration
+            AppBuilder
                 .Create()
-                .WithLoadingCefBinariesIfNotFound(true)
-                .WithSilentCefBinariesLoading(true)
-                // ReSharper disable once RedundantArgumentDefaultValue
-                .WithHostMode(WindowState.Normal)
-                .WithDefaultSubprocess()
-                .WithHostTitle(options.Title)
-                .WithHostIconFile("GitState.ico")
-                .WithAppArgs(args)
-                .WithHostBounds(250, 800)
-                .RegisterCustomerUrlScheme("http", "localhost")
-                .WithStartUrl(startUrl);
-
-            using (var window = ChromelyWindow.Create(config))
-            {
-                var exitCode = window.Run(args);
-                if (exitCode != 0)
-                {
-                    Console.WriteLine("Failed to start chromely frontend: code " + exitCode);
-                }
-            }
+                .UseApp<GiteStateApp>()
+                .UseConfiguration<GiteStateConfig>(new GiteStateConfig())
+                .Build()
+                .Run(args);
             
-            Console.WriteLine("Demo done.");
+            Console.ReadLine();
+            Console.WriteLine("GitState done.");
         }
     }
 }
