@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
+using Chromely;
 using Chromely.Core;
 using IctBaden.Framework.IniFile;
 using IctBaden.Stonehenge3.Hosting;
@@ -25,7 +26,6 @@ namespace GitState
             var hWnd = Process.GetCurrentProcess().MainWindowHandle;
             ShowWindow(hWnd, 0);
         }
-
 
         // ReSharper disable once UnusedParameter.Local
         private static void Main(string[] args)
@@ -60,12 +60,16 @@ namespace GitState
 
             // Starting chromely frontend
             Console.WriteLine("Starting chromely frontend");
-            var startUrl = host.BaseUrl;
+            var config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
+            config.StartUrl = host.BaseUrl;
+            config.WindowHeight = Settings.WindowHeight;
+            config.WindowWidth = Settings.WindowWidth;
+            config.WindowIconFile = "GitState.ico";
 
             AppBuilder
                 .Create()
-                .UseApp<GiteStateApp>()
-                .UseConfiguration<GiteStateConfig>(new GiteStateConfig())
+                .UseApp<GitStateApp>()
+                .UseConfiguration<IChromelyConfiguration>(config)
                 .Build()
                 .Run(args);
             
@@ -73,4 +77,9 @@ namespace GitState
             Console.WriteLine("GitState done.");
         }
     }
+
+    class GitStateApp : BasicChromelyApp
+    {
+    }
+    
 }

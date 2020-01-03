@@ -31,6 +31,8 @@ namespace GitState
         /// </summary>
         public string GitPassword { get; set; }
 
+        public int WindowHeight { get; set; } = 800;
+        public int WindowWidth { get; set; } = 250;
     }
 }
 
