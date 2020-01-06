@@ -130,7 +130,7 @@ namespace GitState
             ModifiedCount = _status.Modified.Count();
             MissingCount = _status.Missing.Count();
 
-            var branch = _repo.Branches[Branch];
+            var branch = _repo.Branches.FirstOrDefault(b => b.FriendlyName == Branch) ?? _repo.Head;
             var tracking = branch.TrackingDetails;
             AheadBy = tracking.AheadBy ?? 0;
             BehindBy = tracking.BehindBy ?? 0;
