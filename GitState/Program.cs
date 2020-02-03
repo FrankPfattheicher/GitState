@@ -29,6 +29,7 @@ namespace GitState
         }
 
         // ReSharper disable once UnusedParameter.Local
+        [STAThread]
         private static void Main(string[] args)
         {
             if (ChromelyRuntime.Platform == ChromelyPlatform.Windows)
@@ -62,12 +63,14 @@ namespace GitState
             // Starting chromely frontend
             Console.WriteLine("Starting chromely frontend");
             var config = DefaultConfiguration.CreateForRuntimePlatform();
+            config.CefDownloadOptions = new CefDownloadOptions(true, true);
             config.StartUrl = host.BaseUrl;
             config.WindowOptions = new WindowOptions
             {
                 Size = new WindowSize(Settings.WindowWidth, Settings.WindowHeight),
                 RelativePathToIconFile = "GitState.ico" 
             };
+            config.DebuggingMode = true;
             
             AppBuilder
                 .Create()
@@ -81,7 +84,7 @@ namespace GitState
         }
     }
 
-    class GitStateApp : BasicChromelyApp
+    internal class GitStateApp : BasicChromelyApp
     {
     }
     
