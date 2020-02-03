@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.InteropServices;
 using Chromely;
 using Chromely.Core;
+using Chromely.Core.Configuration;
 using IctBaden.Framework.IniFile;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
@@ -60,12 +61,14 @@ namespace GitState
 
             // Starting chromely frontend
             Console.WriteLine("Starting chromely frontend");
-            var config = DefaultConfiguration.CreateOSDefault(ChromelyRuntime.Platform);
+            var config = DefaultConfiguration.CreateForRuntimePlatform();
             config.StartUrl = host.BaseUrl;
-            config.WindowHeight = Settings.WindowHeight;
-            config.WindowWidth = Settings.WindowWidth;
-            config.WindowIconFile = "GitState.ico";
-
+            config.WindowOptions = new WindowOptions
+            {
+                Size = new WindowSize(Settings.WindowWidth, Settings.WindowHeight),
+                RelativePathToIconFile = "GitState.ico" 
+            };
+            
             AppBuilder
                 .Create()
                 .UseApp<GitStateApp>()
