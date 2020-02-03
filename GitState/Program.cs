@@ -67,6 +67,7 @@ namespace GitState
             config.StartUrl = host.BaseUrl;
             config.WindowOptions = new WindowOptions
             {
+                Title = "GitState",
                 Size = new WindowSize(Settings.WindowWidth, Settings.WindowHeight),
                 RelativePathToIconFile = "GitState.ico" 
             };
