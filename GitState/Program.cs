@@ -75,7 +75,7 @@ namespace GitState
             
             AppBuilder
                 .Create()
-                .UseApp<GitStateApp>()
+                .UseApp<ChromelyBasicApp>()
                 .UseConfiguration<IChromelyConfiguration>(config)
                 .Build()
                 .Run(args);
@@ -85,8 +85,4 @@ namespace GitState
         }
     }
 
-    internal class GitStateApp : BasicChromelyApp
-    {
-    }
-    
 }
