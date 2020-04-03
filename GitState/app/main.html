@@ -1,13 +1,22 @@
 <!--Title:GitState-->
-<div>
+<div style="margin: 0.5em;">
+    <p>
+        <button class="btn btn-sm btn-secondary"
+                style="width: 3em; color: black; font-size: 80%;"
+                @click="RefreshNow()" :disabled="UpdateRunning" >
+            <i class="fas fa-sync-alt"></i>
+        </button>
+        <span v-if="UpdateRunning">...</span>
+    </p>
     <p v-if="HasStateMessage">
         <span v-html="StateMessage"></span>
     </p>
     <ul class="repo-states" :style="{ fontSize: FontSize + 'px' }" >
         <li v-for="rs in Repos">
-            <table class="repo-entry"  :title="rs.ShortDescription" v-bind:class="{ selected: rs.Selected }" >
-                <tr v-on:click="SelectRepo(rs.Name)">
-                    <td :style="{ color: rs.TextColor, background: rs.StateColor }" style="text-align: center; border-radius: 1em; width: 2em;">
+            <table class="repo-entry"  :title="rs.ShortDescription" :class="{ selected: rs.Selected }" >
+                <tr @click="SelectRepo(rs.Name)">
+                    <td :style="{ color: rs.TextColor, background: rs.StateColor }" 
+                        style="text-align: center; border-radius: 1em; width: 2em;">
                         {{rs.StateText}}
                     </td>
                     <td>

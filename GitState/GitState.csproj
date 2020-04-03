@@ -17,6 +17,7 @@
         <TargetFramework>netcoreapp3.1</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <NoWin32Manifest>true</NoWin32Manifest>
+        <PublishTrimmed>True</PublishTrimmed>
         <LangVersion>8</LangVersion>
     </PropertyGroup>
 

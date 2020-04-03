@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using Chromely;
 using Chromely.Core;
 using Chromely.Core.Configuration;
+using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.IniFile;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
@@ -34,14 +35,14 @@ namespace GitState
         {
             if (ChromelyRuntime.Platform == ChromelyPlatform.Windows)
             {
-                HideWindow();
+                //HideWindow();
             }
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
-            
-            var path = AppDomain.CurrentDomain.BaseDirectory;
+
+            var path = ApplicationInfo.ApplicationDirectory;
             Directory.SetCurrentDirectory(path);
 
-            var settingsFile = new Profile(Profile.LocalToExeFileName);
+            var settingsFile = new Profile(Path.Combine(path, "GitState.cfg"));
             new ProfileClassLoader().LoadClass(Settings, settingsFile);
             
             // Starting stonehenge backend
@@ -50,7 +51,7 @@ namespace GitState
                 Title = "GitState",
                 StartPage = "main",
                 ServerPushMode = ServerPushModes.LongPolling,
-                PollIntervalMs = 30000
+                PollIntervalMs = 10000
             };
             var provider = StonehengeResourceLoader
                 .CreateDefaultLoader(new VueResourceProvider());
