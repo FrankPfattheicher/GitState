@@ -1,0 +1,7 @@
+#!/usr/bin/xdg-open
+[Desktop Entry]
+Name=GitState
+GenericName=GitState
+Exec=/home/frank/GitState/GitState
+Terminal=false
+Type=Application
