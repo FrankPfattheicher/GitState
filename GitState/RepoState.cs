@@ -84,7 +84,7 @@ namespace GitState
                             Username = Program.Settings.GitUserOrToken,
                             Password = Program.Settings.GitPassword
                         };
-                    Credentials CredentialsHandler(string _url, string _user, SupportedCredentialTypes _cred) => credentials;
+                    Credentials CredentialsHandler(string url, string user, SupportedCredentialTypes cred) => credentials;
                     var options = new FetchOptions
                     {
                         CredentialsProvider = CredentialsHandler,

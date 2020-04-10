@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.InteropServices;
 using Chromely;
 using Chromely.Core;
 using Chromely.Core.Configuration;
@@ -20,23 +19,10 @@ namespace GitState
         public static readonly Settings Settings = new Settings();
         public static List<RepoState> Repositories;
 
-        [DllImport("user32.dll")]
-        static extern bool ShowWindow(IntPtr hWnd, int nCmdShow);
-
-        private static void HideWindow()
-        {
-            var hWnd = Process.GetCurrentProcess().MainWindowHandle;
-            ShowWindow(hWnd, 0);
-        }
-
         // ReSharper disable once UnusedParameter.Local
         [STAThread]
         private static void Main(string[] args)
         {
-            if (ChromelyRuntime.Platform == ChromelyPlatform.Windows)
-            {
-                //HideWindow();
-            }
             Trace.Listeners.Add(new TextWriterTraceListener(Console.Out));
 
             var path = ApplicationInfo.ApplicationDirectory;
