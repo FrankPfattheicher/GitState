@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using LibGit2Sharp;
-using LibGit2Sharp.Handlers;
 
 // ReSharper disable UnusedAutoPropertyAccessor.Local
 // ReSharper disable UnusedAutoPropertyAccessor.Global
@@ -85,7 +84,7 @@ namespace GitState
                             Username = Program.Settings.GitUserOrToken,
                             Password = Program.Settings.GitPassword
                         };
-                    Credentials CredentialsHandler(string _url, string _user, SupportedCredentialTypes _cred) => credentials;
+                    Credentials CredentialsHandler(string url, string user, SupportedCredentialTypes cred) => credentials;
                     var options = new FetchOptions
                     {
                         CredentialsProvider = CredentialsHandler,
@@ -130,7 +129,7 @@ namespace GitState
             ModifiedCount = _status.Modified.Count();
             MissingCount = _status.Missing.Count();
 
-            var branch = _repo.Branches[Branch];
+            var branch = _repo.Branches.FirstOrDefault(b => b.FriendlyName == Branch) ?? _repo.Head;
             var tracking = branch.TrackingDetails;
             AheadBy = tracking.AheadBy ?? 0;
             BehindBy = tracking.BehindBy ?? 0;

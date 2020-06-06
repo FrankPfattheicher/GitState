@@ -2,6 +2,12 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitState", "GitState\GitState.csproj", "{C207C32A-8790-4701-ADE9-A1871EDF92D4}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Publish", "Publish", "{A1BE4A2B-2C3B-48B7-8F55-A0E58CF9DC63}"
+ProjectSection(SolutionItems) = preProject
+	publish.bat = publish.bat
+	publish.sh = publish.sh
+EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

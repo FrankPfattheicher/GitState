@@ -31,39 +31,55 @@ namespace GitState.ViewModels
         public string StateMessage { get; private set; }
         [DependsOn(nameof(StateMessage))]
         public bool HasStateMessage => !string.IsNullOrEmpty(StateMessage);
+        public bool UpdateRunning { get; private set; }
 
+        
         private Timer _updater;
         private Task[] _updateTasks;
-        private readonly CancellationTokenSource _cancelUpdates;
+        private CancellationTokenSource _cancelUpdates;
 
         public MainVm(AppSession session) : base(session)
         {
             Trace.TraceInformation($"new MainVm({session.Id})");
             StateMessage = "loading...";
-            _cancelUpdates = new CancellationTokenSource();
-            _updater = new Timer(Update, this, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(60));
+            StartUpdates();
         }
 
-        public void Dispose()
+        private void StartUpdates()
         {
-            Trace.TraceInformation($"delete MainVm({Session.Id})");
+            _cancelUpdates = new CancellationTokenSource();
+            _updater = new Timer(_ => Update(), this, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(60));
+        }
+
+        private void CancelUpdates()
+        {
             _cancelUpdates?.Cancel();
             _updater?.Dispose();
             _updater = null;
         }
         
-        private void Update(object state)
+        public void Dispose()
         {
-            if (_updater == null) return;
+            Trace.TraceInformation($"delete MainVm({Session.Id})");
+            CancelUpdates();
+        }
+        
+        private void Update()
+        {
+            if (_updater == null || UpdateRunning) return;
             
             if (Program.Repositories == null)
             {
                 NotifyPropertyChanged(nameof(FontSize));
-                Trace.TraceInformation("Collect repositories...");
+                StateMessage = "Collect repositories...";
+                NotifyPropertyChanged(nameof(StateMessage));
                 Program.Repositories = Updater.GetRepositories(Program.Settings.RepositoryFolders);
             }
 
             Trace.TraceInformation($"Start state updates {Session.Id}..");
+            UpdateRunning = true;
+            NotifyPropertyChanged(nameof(UpdateRunning));
+            
             var updates = 0;
             // State message
             StateMessage = "";
@@ -92,6 +108,7 @@ namespace GitState.ViewModels
                 if (r.IsUpdating) return; 
                 if ((DateTime.Now - r.LastUpdate).TotalSeconds <= Program.Settings.UpdateIntervalSec) return;
                 
+                NotifyPropertyChanged(nameof(UpdateRunning));
                 NotifyPropertyChanged(nameof(Repos));
                 r.UpdateState();
                 NotifyPropertyChanged(nameof(Repos));
@@ -103,6 +120,9 @@ namespace GitState.ViewModels
                 .ToArray();
 
             Task.WaitAll(_updateTasks);
+            
+            UpdateRunning = false;
+            NotifyPropertyChanged(nameof(UpdateRunning));
             Trace.TraceInformation($"{updates} states updated.");
         }
 
@@ -114,6 +134,16 @@ namespace GitState.ViewModels
                 repo.Selected = repo.Name == name;
             }
             NotifyPropertyChanged(nameof(Repos));
+        }
+
+        [ActionMethod]
+        public void RefreshNow()
+        {
+            if (UpdateRunning) return;
+            
+            Program.Repositories = null;
+            CancelUpdates();
+            StartUpdates();
         }
         
     }
