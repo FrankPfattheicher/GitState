@@ -2,6 +2,6 @@
 Name=GitState
 GenericName=GitState
 Exec=/home/frank/GitState/GitState
-Icon=/home/frank/GitState/GitState64x64.png
+Icon=/home/frank/GitState/GitState.png
 Terminal=false
 Type=Application

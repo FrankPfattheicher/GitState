@@ -49,12 +49,16 @@
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <None Remove="chromelyconfig.json" />
+        <None Remove="GitState.desktop" />
+        <Content Include="GitState.desktop">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Chromely" Version="5.0.77.1" />
-      <PackageReference Include="IctBaden.Framework" Version="1.0.17" />
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.10.18" />
+      <PackageReference Include="Chromely" Version="5.0.79" />
+      <PackageReference Include="IctBaden.Framework" Version="1.0.19" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.11.5" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
