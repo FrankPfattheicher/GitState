@@ -7,6 +7,7 @@ using Chromely.Core;
 using Chromely.Core.Configuration;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.IniFile;
+using IctBaden.Framework.Logging;
 using IctBaden.Stonehenge3.Hosting;
 using IctBaden.Stonehenge3.Kestrel;
 using IctBaden.Stonehenge3.Resources;
@@ -37,10 +38,11 @@ namespace GitState
                 Title = "GitState",
                 StartPage = "main",
                 ServerPushMode = ServerPushModes.LongPolling,
-                PollIntervalMs = 10000
+                PollIntervalSec = 10
             };
+            var logger = Logger.DefaultFactory.CreateLogger("GitState");
             var provider = StonehengeResourceLoader
-                .CreateDefaultLoader(new VueResourceProvider());
+                .CreateDefaultLoader(logger, new VueResourceProvider(logger));
             var host = new KestrelHost(provider, options);
             if (!host.Start("localhost", 8880))
             {
@@ -63,7 +65,7 @@ namespace GitState
             AppBuilder
                 .Create()
                 .UseApp<ChromelyBasicApp>()
-                .UseConfiguration<IChromelyConfiguration>(config)
+                .UseConfig<IChromelyConfiguration>(config)
                 .Build()
                 .Run(args);
             
