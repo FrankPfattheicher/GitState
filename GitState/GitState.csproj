@@ -2,27 +2,24 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetPlatformIdentifier>win-x64;linux-x64</TargetPlatformIdentifier>
         <ApplicationIcon>GitState.ico</ApplicationIcon>
         <StartupObject />
         <Title>GIT - State</Title>
         <Authors>Frank Pfattheicher</Authors>
         <Description>A active state display for GIT repositories</Description>
-        <Copyright>(C) 2019 ICT Baden GmbH</Copyright>
+        <Copyright>(C) 2019-2022 ICT Baden GmbH</Copyright>
         <PackageProjectUrl>https://github.com/FrankPfattheicher/GitState</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/FrankPfattheicher/GitState/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
         <Version>1.0.1</Version>
         <Company>ICT Baden GmbH</Company>
-        <TargetFramework>netcoreapp3.1</TargetFramework>
+        <TargetFramework>net6.0</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <NoWin32Manifest>true</NoWin32Manifest>
         <PublishTrimmed>True</PublishTrimmed>
-        <LangVersion>8</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <PlatformTarget>x64</PlatformTarget>
+        <LangVersion>10</LangVersion>
+        <PackageVersion>2.0.0</PackageVersion>
+        <AssemblyVersion>2.0.0</AssemblyVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -56,14 +53,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Chromely" Version="5.1.88" />
-      <PackageReference Include="IctBaden.Framework" Version="1.2.1" />
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.19.3" />
+      <PackageReference Include="IctBaden.Framework" Version="1.4.2" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.22.1" />
       <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.17" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.17" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 

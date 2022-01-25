@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using Chromely;
-using Chromely.Core;
-using Chromely.Core.Configuration;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.IniFile;
 using IctBaden.Framework.Logging;
@@ -17,8 +13,7 @@ namespace GitState
 {
     internal static class Program
     {
-        public static readonly Settings Settings = new Settings();
-        public static List<RepoState> Repositories;
+        private static readonly Settings Settings = new();
 
         // ReSharper disable once UnusedParameter.Local
         [STAThread]
@@ -31,6 +26,7 @@ namespace GitState
 
             var settingsFile = new Profile(Path.Combine(path, "GitState.cfg"));
             new ProfileClassLoader().LoadClass(Settings, settingsFile);
+            Settings.FileName = settingsFile.FileName; 
             
             // Starting stonehenge backend
             var options = new StonehengeHostOptions
@@ -38,38 +34,29 @@ namespace GitState
                 Title = "GitState",
                 StartPage = "main",
                 ServerPushMode = ServerPushModes.LongPolling,
-                PollIntervalSec = 10
+                PollIntervalSec = 10,
+                HandleWindowResized = true
             };
             var logger = Logger.DefaultFactory.CreateLogger("GitState");
-            var provider = StonehengeResourceLoader
-                .CreateDefaultLoader(logger, new VueResourceProvider(logger));
+            var vue = new VueResourceProvider(logger);
+            var provider = StonehengeResourceLoader.CreateDefaultLoader(logger, vue);
+            provider.Services.AddService(typeof(Settings), Settings);
+            
             var host = new KestrelHost(provider, options);
             if (!host.Start("localhost", 8880))
             {
                 Console.WriteLine("Failed to start stonehenge server");
             }
 
-            // Starting chromely frontend
-            Console.WriteLine("Starting chromely frontend");
-            var config = DefaultConfiguration.CreateForRuntimePlatform();
-            config.CefDownloadOptions = new CefDownloadOptions(true, true);
-            config.StartUrl = host.BaseUrl;
-            config.WindowOptions = new WindowOptions
+            // Starting frontend
+            Console.WriteLine("Starting frontend");
+            var wnd = new HostWindow(host.BaseUrl, "GitState", new Point(Settings.WindowWidth, Settings.WindowHeight));
+            if (!wnd.Open())
             {
-                Title = "GitState",
-                Size = new WindowSize(Settings.WindowWidth, Settings.WindowHeight),
-                RelativePathToIconFile = "GitState.ico" 
-            };
-            config.DebuggingMode = true;
+                Console.WriteLine("GitState failed to open window");
+                Environment.Exit(1);
+            }
             
-            AppBuilder
-                .Create()
-                .UseApp<ChromelyBasicApp>()
-                .UseConfig<IChromelyConfiguration>(config)
-                .Build()
-                .Run(args);
-            
-            Console.ReadLine();
             Console.WriteLine("GitState done.");
         }
     }
