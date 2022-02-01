@@ -4,10 +4,9 @@ using System.IO;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.IniFile;
 using IctBaden.Framework.Logging;
+using IctBaden.Stonehenge3.App;
 using IctBaden.Stonehenge3.Hosting;
-using IctBaden.Stonehenge3.Kestrel;
-using IctBaden.Stonehenge3.Resources;
-using IctBaden.Stonehenge3.Vue;
+using Microsoft.Extensions.Logging;
 
 namespace GitState
 {
@@ -26,8 +25,9 @@ namespace GitState
 
             var settingsFile = new Profile(Path.Combine(path, "GitState.cfg"));
             new ProfileClassLoader().LoadClass(Settings, settingsFile);
-            Settings.FileName = settingsFile.FileName; 
-            
+            Settings.FileName = settingsFile.FileName;
+
+
             // Starting stonehenge backend
             var options = new StonehengeHostOptions
             {
@@ -38,27 +38,25 @@ namespace GitState
                 HandleWindowResized = true
             };
             var logger = Logger.DefaultFactory.CreateLogger("GitState");
-            var vue = new VueResourceProvider(logger);
-            var provider = StonehengeResourceLoader.CreateDefaultLoader(logger, vue);
-            provider.Services.AddService(typeof(Settings), Settings);
-            
-            var host = new KestrelHost(provider, options);
-            if (!host.Start("localhost", 8880))
+
+
+            var ui = new StonehengeUi(logger, options);
+            ui.Services.AddService(typeof(Settings), Settings);
+            if (!ui.Start())
             {
-                Console.WriteLine("Failed to start stonehenge server");
+                ui.Logger.LogCritical("Failed to start application");
+                Environment.Exit(1);
             }
 
-            // Starting frontend
-            Console.WriteLine("Starting frontend");
-            var wnd = new HostWindow(host.BaseUrl, "GitState", new Point(Settings.WindowWidth, Settings.WindowHeight));
-            if (!wnd.Open())
+            var wnd = new HostWindow(ui.Server.BaseUrl, "GitState", new Point(Settings.WindowWidth, Settings.WindowHeight));
+            if(!wnd.Open())
             {
-                Console.WriteLine("GitState failed to open window");
+                ui.Logger.LogCritical("Failed to open application window");
                 Environment.Exit(1);
             }
             
             Console.WriteLine("GitState done.");
+            Environment.Exit(0);
         }
     }
-
 }

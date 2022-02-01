@@ -13,13 +13,14 @@
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
         <Version>1.0.1</Version>
         <Company>ICT Baden GmbH</Company>
-        <TargetFramework>net6.0</TargetFramework>
+        <TargetFramework>netcoreapp3.1</TargetFramework>
         <CopyLocalLockFileAssemblies>true</CopyLocalLockFileAssemblies>
         <NoWin32Manifest>true</NoWin32Manifest>
         <PublishTrimmed>True</PublishTrimmed>
         <LangVersion>10</LangVersion>
         <PackageVersion>2.0.0</PackageVersion>
-        <AssemblyVersion>2.0.0</AssemblyVersion>
+        <AssemblyVersion>1.1.0</AssemblyVersion>
+        <FileVersion>1.1.0</FileVersion>
     </PropertyGroup>
 
     <ItemGroup>
@@ -53,13 +54,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="IctBaden.Framework" Version="1.4.2" />
-      <PackageReference Include="IctBaden.Stonehenge3" Version="3.22.1" />
-      <PackageReference Include="LibGit2Sharp" Version="0.26.2" />
+      <PackageReference Include="IctBaden.Framework" Version="1.4.3" />
+      <PackageReference Include="IctBaden.Stonehenge3" Version="3.23.1" />
+      <PackageReference Include="LibGit2Sharp" Version="0.27.0-preview-0175" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
-      <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.0" />
-      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="6.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Configuration" Version="3.1.22" />
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.22" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
