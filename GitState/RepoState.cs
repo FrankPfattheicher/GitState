@@ -62,7 +62,7 @@ namespace GitState
         private static int GetChanges(IEnumerable<object> a, IEnumerable<object> b) => a.Count() != b.Count() ? 1 : 0;
 
         // ReSharper disable once UnusedMethodReturnValue.Global
-        public int UpdateState()
+        public int UpdateState(Settings settings)
         {
             if (IsUpdating) return 0;
             
@@ -74,15 +74,15 @@ namespace GitState
             RepositoryStatus status;
             try
             {
-                if (!Program.Settings.UseLocalStateOnly)
+                if (!settings.UseLocalStateOnly)
                 {
                     context = "Fetch";
                     var remote = _repo.Network.Remotes["origin"];
                     var refSpecs = remote.FetchRefSpecs.Select(x => x.Specification).ToList();
                     var credentials = new UsernamePasswordCredentials
                         {
-                            Username = Program.Settings.GitUserOrToken,
-                            Password = Program.Settings.GitPassword
+                            Username = settings.GitUserOrToken,
+                            Password = settings.GitPassword
                         };
                     Credentials CredentialsHandler(string url, string user, SupportedCredentialTypes cred) => credentials;
                     var options = new FetchOptions

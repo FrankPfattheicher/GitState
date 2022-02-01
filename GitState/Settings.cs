@@ -3,8 +3,10 @@
 
 namespace GitState
 {
-    internal class Settings
+    public class Settings
     {
+        public string FileName;
+        
         /// <summary>
         /// Interval in seconds the repository states are updated.
         /// </summary>

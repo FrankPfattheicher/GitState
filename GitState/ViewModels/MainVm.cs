@@ -18,15 +18,18 @@ namespace GitState.ViewModels
 {
     public class MainVm : ActiveViewModel, IDisposable
     {
+        private readonly Settings _settings;
+        private List<RepoState> _repositories;
+
         // ReSharper disable once MemberCanBeMadeStatic.Global
         // ReSharper disable once MemberCanBePrivate.Global
-        public List<RepoVm> Repos => Program.Repositories?
+        public List<RepoVm> Repos => _repositories?
             .Select(r => new RepoVm(r))
             .ToList();
 
 
         // ReSharper disable once MemberCanBeMadeStatic.Global
-        public int FontSize => Program.Settings.FontSize;
+        public int FontSize => _settings.FontSize;
 
         public string StateMessage { get; private set; }
         [DependsOn(nameof(StateMessage))]
@@ -38,8 +41,10 @@ namespace GitState.ViewModels
         private Task[] _updateTasks;
         private CancellationTokenSource _cancelUpdates;
 
-        public MainVm(AppSession session) : base(session)
+        public MainVm(AppSession session, Settings settings) 
+            : base(session)
         {
+            _settings = settings;
             Trace.TraceInformation($"new MainVm({session.Id})");
             StateMessage = "loading...";
             StartUpdates();
@@ -68,68 +73,70 @@ namespace GitState.ViewModels
         {
             if (_updater == null || UpdateRunning) return;
             
-            if (Program.Repositories == null)
+            if (_repositories == null)
             {
                 NotifyPropertyChanged(nameof(FontSize));
                 StateMessage = "Collect repositories...";
                 NotifyPropertyChanged(nameof(StateMessage));
-                Program.Repositories = Updater.GetRepositories(Program.Settings.RepositoryFolders);
+                _repositories = Updater.GetRepositories(_settings.RepositoryFolders);
             }
 
             Trace.TraceInformation($"Start state updates {Session.Id}..");
             UpdateRunning = true;
             NotifyPropertyChanged(nameof(UpdateRunning));
             
-            var updates = 0;
             // State message
             StateMessage = "";
-            if (Program.Repositories.Count == 0)
+            if (_repositories.Count == 0)
             {
-                if (!File.Exists(Profile.LocalToExeFileName))
+                if (!File.Exists(_settings.FileName))
                 {
                     StateMessage = "No configuration file found<br/>"
-                                + Profile.LocalToExeFileName;
+                                   + _settings.FileName;
                 }
-                else if (Program.Settings.RepositoryFolders.Count == 0)
+                else if (_settings.RepositoryFolders.Count == 0)
                 {
                     StateMessage = "No repository folders specified in<br/>"
-                                + Profile.LocalToExeFileName;
+                                   + Profile.LocalToExeFileName;
                 }
                 else
                 {
                     StateMessage = "No repositories found in <br/>"
-                                + string.Join("<br/>", Program.Settings.RepositoryFolders);
+                                   + string.Join("<br/>", _settings.RepositoryFolders);
                 }
             }
             NotifyPropertyChanged(nameof(StateMessage));
+
+            var updates = 0;
             
-            void Update(RepoState r)
+            void UpdateRepo(RepoState r)
             {
                 if (r.IsUpdating) return; 
-                if ((DateTime.Now - r.LastUpdate).TotalSeconds <= Program.Settings.UpdateIntervalSec) return;
+                if ((DateTime.Now - r.LastUpdate).TotalSeconds <= _settings.UpdateIntervalSec) return;
                 
                 NotifyPropertyChanged(nameof(UpdateRunning));
                 NotifyPropertyChanged(nameof(Repos));
-                r.UpdateState();
+                r.UpdateState(_settings);
                 NotifyPropertyChanged(nameof(Repos));
                 updates++;
             }
             
-            _updateTasks = Program.Repositories
-                .Select(r => Task.Run(() => Update(r), _cancelUpdates.Token))
+            _updateTasks = _repositories
+                .Select(r => Task.Run(() => UpdateRepo(r), _cancelUpdates.Token))
                 .ToArray();
 
             Task.WaitAll(_updateTasks);
             
             UpdateRunning = false;
             NotifyPropertyChanged(nameof(UpdateRunning));
+            
             Trace.TraceInformation($"{updates} states updated.");
         }
 
         [ActionMethod]
         public void SelectRepo(string name)
         {
-            foreach (var repo in Program.Repositories)
+            foreach (var repo in _repositories)
             {
                 repo.Selected = repo.Name == name;
             }
@@ -141,7 +148,7 @@ namespace GitState.ViewModels
         {
             if (UpdateRunning) return;
             
-            Program.Repositories = null;
+            _repositories = null;
             CancelUpdates();
             StartUpdates();
         }
