@@ -37,6 +37,9 @@
     </ItemGroup>
 
     <ItemGroup>
+        <EmbeddedResource Include="app\favicon.ico">
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        </EmbeddedResource>
         <Content Include="GitState.cfg">
           <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </Content>
