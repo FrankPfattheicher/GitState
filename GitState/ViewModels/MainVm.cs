@@ -1,6 +1,6 @@
 using System;
-using IctBaden.Stonehenge3.Core;
-using IctBaden.Stonehenge3.ViewModel;
+using IctBaden.Stonehenge.Core;
+using IctBaden.Stonehenge.ViewModel;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;

@@ -4,8 +4,8 @@ using System.IO;
 using IctBaden.Framework.AppUtils;
 using IctBaden.Framework.IniFile;
 using IctBaden.Framework.Logging;
-using IctBaden.Stonehenge3.App;
-using IctBaden.Stonehenge3.Hosting;
+using IctBaden.Stonehenge.App;
+using IctBaden.Stonehenge.Hosting;
 using Microsoft.Extensions.Logging;
 
 namespace GitState

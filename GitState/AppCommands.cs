@@ -1,5 +1,5 @@
 using IctBaden.Framework.IniFile;
-using IctBaden.Stonehenge3.Hosting;
+using IctBaden.Stonehenge.Hosting;
 
 namespace GitState;
 

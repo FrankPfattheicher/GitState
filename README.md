@@ -33,7 +33,7 @@ Just download, unpack in an GitState folder, edit [GitState.cfg](Configuration.m
 
 **Chromely** https://github.com/chromelyapps/Chromely
 
-**stonehenge3** https://github.com/FrankPfattheicher/stonehenge3
+**Stonehenge** https://github.com/FrankPfattheicher/Stonehenge
 
 **IctBaden.Framework** https://github.com/FrankPfattheicher/IctBaden.Framework
 
