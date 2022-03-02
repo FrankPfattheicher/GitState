@@ -22,7 +22,7 @@ Using my own libraries i had a lot of insights about my own libraries.
 * is it usable as expected - not everywhere - improving...
 
 ## Releases
-Currently available [v1.0.1](https://github.com/FrankPfattheicher/GitState/releases/tag/v1.0.1) for Windows-x64 and Linux-x64
+Currently available [v1.1.1](https://github.com/FrankPfattheicher/GitState/releases) for Windows-x64 and Linux-x64
 
 Just download, unpack in an GitState folder, edit [GitState.cfg](Configuration.md) for your needs.
 
@@ -31,9 +31,7 @@ Just download, unpack in an GitState folder, edit [GitState.cfg](Configuration.m
 
 **LibGit2Sharp** https://github.com/libgit2/libgit2sharp
 
-**Chromely** https://github.com/chromelyapps/Chromely
-
-**Stonehenge** https://github.com/FrankPfattheicher/Stonehenge
+**Stonehenge** https://github.com/FrankPfattheicher/Stonehenge4
 
 **IctBaden.Framework** https://github.com/FrankPfattheicher/IctBaden.Framework
 

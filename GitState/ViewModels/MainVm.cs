@@ -71,7 +71,7 @@ namespace GitState.ViewModels
         
         private void Update()
         {
-            if (_updater == null || UpdateRunning) return;
+            if (_updater == null || UpdateRunning || !_settings.RepositoryFolders.Any()) return;
             
             if (_repositories == null)
             {

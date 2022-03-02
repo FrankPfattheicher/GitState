@@ -49,7 +49,6 @@
         <Content Include="GitState.png">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
-        <None Remove="chromelyconfig.json" />
         <None Remove="GitState.desktop" />
         <Content Include="GitState.desktop">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>

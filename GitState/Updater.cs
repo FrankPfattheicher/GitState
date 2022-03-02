@@ -29,8 +29,11 @@ namespace GitState
                 
                 foreach (var directory in Directory.EnumerateDirectories(baseFolder))
                 {
+                    if(string.IsNullOrEmpty(directory)) continue;
+                    
                     try
                     {
+                        Trace.TraceInformation("Get repo state of " + directory);
                         var repo = new Repository(directory);
                         var info = repo.Info;
                         var status = new RepoState(repo, Path.GetFileName(directory));
