@@ -35,7 +35,7 @@ namespace GitState
                     {
                         Trace.TraceInformation("Get repo state of " + directory);
                         var repo = new Repository(directory);
-                        var info = repo.Info;
+                        //var info = repo.Info;
                         var status = new RepoState(repo, Path.GetFileName(directory));
                         repos.Add(status);
                     }

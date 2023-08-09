@@ -16,7 +16,7 @@ using IctBaden.Framework.IniFile;
 
 namespace GitState.ViewModels
 {
-    public class MainVm : ActiveViewModel, IDisposable
+    public class MainVm : ActiveViewModel
     {
         private readonly Settings _settings;
         private List<RepoState> _repositories;
@@ -62,8 +62,8 @@ namespace GitState.ViewModels
             _updater?.Dispose();
             _updater = null;
         }
-        
-        public void Dispose()
+
+        public override void OnDispose()
         {
             Trace.TraceInformation($"delete MainVm({Session.Id})");
             CancelUpdates();
