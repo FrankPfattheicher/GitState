@@ -5,7 +5,7 @@ namespace GitState
 {
     public class Settings
     {
-        public string FileName;
+        public string FileName = string.Empty;
         
         /// <summary>
         /// Interval in seconds the repository states are updated.
@@ -27,11 +27,11 @@ namespace GitState
         /// <summary>
         /// GIT user name or access token
         /// </summary>
-        public string GitUserOrToken { get; set; }
+        public string GitUserOrToken { get; set; } = string.Empty;
         /// <summary>
         /// GIT user's password or empty for usage with token
         /// </summary>
-        public string GitPassword { get; set; }
+        public string GitPassword { get; set; } = string.Empty;
 
         public int WindowHeight { get; set; } = 800;
         public int WindowWidth { get; set; } = 250;

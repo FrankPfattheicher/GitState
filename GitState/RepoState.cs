@@ -48,12 +48,12 @@ public class RepoState
     public int MissingCount { get; private set; }
     public int IgnoredCount { get; private set; }
 
-    public string ShortText { get; private set; }
-    public string LongText { get; private set; }
+    public string ShortText { get; private set; } = string.Empty;
+    public string LongText { get; private set; } = string.Empty;
 
     private readonly Repository _repo;
     private readonly Settings _settings;
-    private RepositoryStatus _status;
+    private RepositoryStatus? _status;
 
     public RepoState(Repository repo, Settings settings, string name)
     {

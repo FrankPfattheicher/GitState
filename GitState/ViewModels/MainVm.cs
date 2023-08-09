@@ -19,11 +19,11 @@ namespace GitState.ViewModels;
 public class MainVm : ActiveViewModel
 {
     private readonly Settings _settings;
-    private List<RepoState> _repositories;
+    private List<RepoState> _repositories = new();
 
     // ReSharper disable once MemberCanBeMadeStatic.Global
     // ReSharper disable once MemberCanBePrivate.Global
-    public List<RepoVm> Repos => _repositories?
+    public List<RepoVm> Repos => _repositories
         .Select(r => new RepoVm(r))
         .ToList();
 
@@ -36,10 +36,10 @@ public class MainVm : ActiveViewModel
     public bool HasStateMessage => !string.IsNullOrEmpty(StateMessage);
     public bool UpdateRunning { get; private set; }
 
-    private Updater _updater;
-    private Timer _updateTimer;
-    private Task[] _updateTasks;
-    private CancellationTokenSource _cancelUpdates;
+    private readonly Updater _updater;
+    private Timer? _updateTimer;
+    private Task[]? _updateTasks;
+    private CancellationTokenSource? _cancelUpdates;
 
     public MainVm(AppSession session, Settings settings) 
         : base(session)
@@ -74,7 +74,7 @@ public class MainVm : ActiveViewModel
     {
         if (_updateTimer == null || UpdateRunning || !_settings.RepositoryFolders.Any()) return;
             
-        if (_repositories == null)
+        if (!_repositories.Any())
         {
             NotifyPropertyChanged(nameof(FontSize));
             StateMessage = "Collect repositories...";
@@ -123,7 +123,7 @@ public class MainVm : ActiveViewModel
         }
             
         _updateTasks = _repositories
-            .Select(r => Task.Run(() => UpdateRepo(r), _cancelUpdates.Token))
+            .Select(r => Task.Run(() => UpdateRepo(r), _cancelUpdates?.Token ?? CancellationToken.None))
             .ToArray();
         
         Task.WaitAll(_updateTasks);
@@ -149,7 +149,7 @@ public class MainVm : ActiveViewModel
     {
         if (UpdateRunning) return;
             
-        _repositories = null;
+        _repositories.Clear();
         CancelUpdates();
         StartUpdates();
     }
