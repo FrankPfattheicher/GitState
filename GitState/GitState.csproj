@@ -7,7 +7,7 @@
         <Title>GIT - State</Title>
         <Authors>Frank Pfattheicher</Authors>
         <Description>A active state display for GIT repositories</Description>
-        <Copyright>(C) 2019-2022 ICT Baden GmbH</Copyright>
+        <Copyright>(C) 2019-2023 ICT Baden GmbH</Copyright>
         <PackageProjectUrl>https://github.com/FrankPfattheicher/GitState</PackageProjectUrl>
         <PackageLicenseUrl>https://github.com/FrankPfattheicher/GitState/blob/master/LICENSE</PackageLicenseUrl>
         <RepositoryUrl>https://github.com/FrankPfattheicher/GitState</RepositoryUrl>
@@ -59,7 +59,7 @@
       <PackageReference Include="IctBaden.Framework" Version="2.2.0" />
       <PackageReference Include="IctBaden.Stonehenge4" Version="4.4.7" />
       <PackageReference Include="LibGit2Sharp" Version="0.27.2" />
-      <PackageReference Include="LibGit2Sharp-SSH" Version="1.0.22" />
+      <PackageReference Include="LibGit2Sharp-SSH-updated-libssh2" Version="1.0.25" />
       <PackageReference Include="Microsoft.AspNetCore.Hosting" Version="2.2.7" />
       <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
       <PackageReference Include="Microsoft.Extensions.Configuration" Version="6.0.1" />

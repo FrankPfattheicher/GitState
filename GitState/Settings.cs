@@ -23,7 +23,7 @@ namespace GitState
         /// <summary>
         /// Semicolon separated list of folders to search for repo folders.
         /// </summary>
-        public List<string> RepositoryFolders { get; set; } = new List<string>();
+        public List<string> RepositoryFolders { get; set; } = new();
         /// <summary>
         /// GIT user name or access token
         /// </summary>
