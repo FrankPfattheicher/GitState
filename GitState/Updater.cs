@@ -41,7 +41,15 @@ internal class Updater
                 {
                     Trace.TraceInformation("Get repo state of " + directory);
                     var repo = new Repository(directory);
-                    //var info = repo.Info;
+                    
+                    // workaround for not supported SSL origins
+                    var url = repo.Config.Get<string>("remote.origin.url").Value;
+                    if (url.StartsWith("git@github.com:"))
+                    {
+                        url = url.Replace("git@github.com:", "https://github.com/");
+                        repo.Config.Set("remote.origin.url", url);
+                    }
+
                     var status = new RepoState(repo, _settings, Path.GetFileName(directory));
                     repos.Add(status);
                 }

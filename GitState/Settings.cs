@@ -17,11 +17,11 @@ namespace GitState
         /// </summary>
         public bool UseLocalStateOnly { get; set; }
         /// <summary>
-        /// UI font size in pixel.
+        /// UI font size in pixel
         /// </summary>
         public int FontSize { get; set; } = 11;
         /// <summary>
-        /// Semicolon separated list of folders to search for repo folders.
+        /// Semicolon separated list of folders to search for repo folders
         /// </summary>
         public List<string> RepositoryFolders { get; set; } = new();
         /// <summary>
