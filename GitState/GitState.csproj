@@ -42,7 +42,7 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </EmbeddedResource>
         <Content Include="GitState.cfg">
-          <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+          <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </Content>
         <Content Include="GitState.ico">
             <CopyToOutputDirectory>Always</CopyToOutputDirectory>
