@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
+//using System.IO;
 using System.Linq;
 using System.Text;
 using LibGit2Sharp;
@@ -67,17 +67,17 @@ public class RepoState
 
     Credentials CredentialsHandler(string url, string user, SupportedCredentialTypes cred)
     {
-        if ((cred & SupportedCredentialTypes.Ssh) != 0)
-        {
-            var sshDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
-            return new SshUserKeyCredentials()
-            {
-                Username = _settings.GitUserOrToken,
-                Passphrase = string.Empty,
-                PublicKey = Path.Combine(sshDir, "id_rsa.pub"),
-                PrivateKey = Path.Combine(sshDir, "id_rsa"),
-            };
-        }
+        // if ((cred & SupportedCredentialTypes.Ssh) != 0)
+        // {
+        //     var sshDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), ".ssh");
+        //     return new SshUserKeyCredentials()
+        //     {
+        //         Username = _settings.GitUserOrToken,
+        //         Passphrase = string.Empty,
+        //         PublicKey = Path.Combine(sshDir, "id_rsa.pub"),
+        //         PrivateKey = Path.Combine(sshDir, "id_rsa"),
+        //     };
+        // }
 
         if ((cred & SupportedCredentialTypes.Default) != 0)
         {
